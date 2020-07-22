@@ -1,0 +1,30 @@
+/* Custom page CSS
+-------------------------------------------------- */
+
+/* Not required for template or sticky footer method. */
+
+main>.container {
+  padding: 60px 15px 0;
+  color: #ffffff
+}
+
+.footer {
+  background-color: #bff6cd;
+}
+
+.footer>.container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+code {
+  font-size: 80%;
+}
+
+.navbar {
+  background-color: #247583;
+}
+
+body {
+  background-color: #333;
+}

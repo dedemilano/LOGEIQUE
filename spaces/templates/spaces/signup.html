@@ -1,0 +1,78 @@
+{% extends 'spaces/base.html' %}
+{% block title %}Enregistrement{% endblock %}
+{% block navbarbrand1 %}Se connecter{% endblock navbarbrand1 %}
+{% block navlink1 %}Nouveautés{% endblock navlink1 %}
+{% block navlink2 %}forum{% endblock navlink2 %}
+{% block navlinkdisabled1 %}S'enregistrer{% endblock navlinkdisabled1 %}
+{% block mt51 %}Mon nom c'est LOGEIQUE V1 et vous ?{% endblock mt51 %}
+{% block lead1 %} Présentez vous à moi ,ensemble nous ferons des exploits{% endblock lead1 %}
+{% block content %}
+<form method='POST' action="{% url 'spaces:signup' %}">
+    {% csrf_token %}
+    <p>
+        {{form.username.label}}
+        {{form.username}}
+    </p>
+
+    <p>
+        {{form.first_name.label}}
+        {{form.first_name}}
+    </p>
+
+    <p>
+        {{form.last_name.label}}
+        {{form.last_name}}
+    </p>
+
+    <p>
+        {{form.contact.label}}
+        {{form.contact}}
+    </p>
+
+    <p>
+        {{form.email.label}}
+        {{form.email}}
+    </p>
+
+    <p>
+        {{form.password.label}}
+        {{form.password}}
+    </p>
+
+    <p>
+        {{form.password_verification.label}}
+        {{form.password_verification}}
+    </p>
+
+    <p>
+        {{form.client.label}}
+        {{form.client}}
+
+
+        {{form.landlord.label}}
+        {{form.landlord}}
+    </p>
+    <input type="submit" name="Creer compte" , value="Creer compte">
+</form>
+{% endblock content %}
+{% block scripts %}
+const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+const check_client = document.querySelector('#is_cl');
+const check_landlord = document.querySelector('#is_la');
+const choix = document.querySelectorAll('.stick');
+
+function active() {
+if (check_client.checked === true) {
+check_client.checked === false;
+this.checked === true;
+}
+else if(check_landlord.checked === true){
+check_client.checked === false
+}
+}
+function handleCheck(e) {
+if (choix[0].checked === true && choix[1].checked === true) {
+for (let i = 0; i < choix.length; i++) { choix[i].checked=false; } } else if(check_client.checked===true){
+    check_landlord.checked===false } else if(check_landlord===true){ check_client===true } checkboxes.forEach(checkbox=>
+    checkbox.addEventListener('click', handleCheck));
+    {% endblock %}

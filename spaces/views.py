@@ -1,0 +1,319 @@
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.urls import reverse
+from .forms import SignUpForm, SignInForm, EditForm, AddHouseForm
+from django.contrib.auth.models import User
+from .models import Client, Landlord, House
+from django.shortcuts import get_object_or_404, Http404
+from django.contrib.auth.decorators import login_required
+
+# Create your views here.
+
+
+def home(request):
+    return render(request, 'spaces/index.html', locals())
+
+
+def sign_up(request):
+    form = SignUpForm()
+
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            email = form.cleaned_data['email']
+            contact = form.cleaned_data['contact']
+            client = form.cleaned_data['client']
+            landlord = form.cleaned_data['landlord']
+            password1 = form.cleaned_data['password']
+            password2 = form.cleaned_data['password_verification']
+
+            if password1 == password2:
+                print("password zo")
+                if client:
+                    if email:
+                        user = User.objects.create_user(
+                            username=username, first_name=first_name, last_name=last_name, email=email, password=password1)
+                        user.save()
+                        client = Client(user=user, contact=contact)
+                        client.save()
+                    elif not email:
+                        user = User.objects.create_user(
+                            username=username, first_name=first_name, last_name=last_name, password=password1)
+                        user.save()
+                        client = Client(user=user, contact=contact)
+                        client.save()
+
+                elif landlord:
+                    if email:
+                        user = User.objects.create_user(
+                            username=username, first_name=first_name, last_name=last_name, email=email, password=password1)
+                        landlord = Landlord(user=user, contact=contact)
+                        landlord.save()
+                    elif not email:
+                        user = User.objects.create_user(
+                            username=username, first_name=first_name, last_name=last_name, password=password1)
+                        landlord = Landlord(user=user, contact=contact)
+                        landlord.save()
+
+            elif password1 != password2:
+                pass_err_msg = "Les mots de pass ne sont pas pareils"
+            return render(request, 'spaces/signin.html', locals())
+
+    context = {'form': form}
+    return render(request, 'spaces/signup.html', locals())
+
+
+def sign_up_treat(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            email = form.cleaned_data['email']
+            contact = form.cleaned_data['contact']
+            client = form.cleaned_data['client']
+            landlord = form.cleaned_data['landlord']
+            password1 = form.cleaned_data['password']
+            password2 = form.cleaned_data['password_verification']
+
+            if password1 == password2:
+                print("password zo")
+                if client:
+                    if email:
+                        user = User.objects.create_user(
+                            username=username, first_name=first_name, last_name=last_name, email=email, password=password1)
+                        user.save()
+                        client = Client(user=user, contact=contact)
+                        client.save()
+                    elif not email:
+                        user = User.objects.create_user(
+                            username=username, first_name=first_name, last_name=last_name, password=password1)
+                        user.save()
+                        client = Client(user=user, contact=contact)
+                        client.save()
+
+                elif landlord:
+                    if email:
+                        user = User.objects.create_user(
+                            username=username, first_name=first_name, last_name=last_name, email=email, password=password1)
+                        landlord = Landlord(user=user, contact=contact)
+                        landlord.save()
+                    elif not email:
+                        user = User.objects.create_user(
+                            username=username, first_name=first_name, last_name=last_name, password=password1)
+                        landlord = Landlord(user=user, contact=contact)
+                        landlord.save()
+
+            elif password1 != password2:
+                pass_err_msg = "Les mots de pass ne sont pas pareils"
+    return render(request, 'spaces/signin.html', locals())
+
+
+def sign_in(request):
+    form = SignInForm()
+    error = False
+    if request.method == 'POST':
+        form = SignInForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            client_check = form.cleaned_data['client']
+            landlord_check = form.cleaned_data['landlord']
+
+            if client_check:
+                try:
+                    user_tempt = get_object_or_404(User, username=username)
+                    client_user = get_object_or_404(
+                        Client, user_id=user_tempt.id)
+                    if client_user:
+                        client_user = authenticate(
+                            username=username, password=password)
+
+                        if client_user:
+                            login(request, client_user)
+
+                        else:
+                            error = True
+                except Http404:
+                    user_tempt = None
+                    error = True
+
+            elif landlord_check:
+                try:
+                    user_tempt = get_object_or_404(User, username=username)
+                    landlord_user = get_object_or_404(
+                        Landlord, user_id=user_tempt.id)
+                    if landlord_user:
+                        landlord_user = authenticate(
+                            username=username, password=password)
+
+                        if landlord_user:
+                            login(request, landlord_user)
+                        else:
+                            error = True
+                except Http404:
+                    user_tempt = None
+                    error = True
+
+    return render(request, 'spaces/signin.html', locals())
+
+
+@login_required()
+def see_profile(request, id):
+    user = User.objects.get(id=id)
+    try:
+        user.is_superuser == 0
+        try:
+            user.client.user_id != None
+            return render(request, 'spaces/see_client_profile.html', locals())
+        except:
+            user.landlord.user_id != None
+            return render(request, 'spaces/see_landlord_profile.html', locals())
+    except:
+        print("Not authorized")
+        return render(request, 'spaces/see_profile.html', locals())
+
+
+@login_required()
+def edit_profile(request, id):
+    error = False
+    error_pass_no_match = False
+    no_username_msg = False
+    no_first_name_msg = False
+    no_last_name_msg = False
+    no_email_msg = False
+    no_contact_msg = False
+    no_pass_msg = False
+    form = EditForm(request.POST)
+    if form.is_valid():
+        print("ok valid")
+        username = form.cleaned_data['username']
+        first_name = form.cleaned_data['first_name']
+        last_name = form.cleaned_data['last_name']
+        email = form.cleaned_data['email']
+        contact = form.cleaned_data['contact']
+        password1 = form.cleaned_data['password']
+        password2 = form.cleaned_data['password_verification']
+
+        user = User.objects.get(id=id)
+        try:
+            if username:
+                user.username = username
+            else:
+                no_username_msg = True
+                print("username not changed")
+            if first_name:
+                user.first_name = first_name
+            else:
+                no_first_name_msg = True
+                print("first name not changed")
+            if last_name:
+                user.last_name = last_name
+            else:
+                no_last_name_msg = True
+                print("last name not changed")
+            if email:
+                user.email = email
+            else:
+                no_email_msg = True
+                print("email not changed")
+            if contact:
+                try:
+                    user.client.user_id != None
+                    user.client.contact = contact
+                except:
+                    user.landlord.user_id != None
+                    user.landlord.contact = contact
+            else:
+                no_contact_msg = True
+                print("contact not changed")
+            if password1 and password2:
+                if password1 == password2:
+                    user.set_password(password1)
+                else:
+                    error_pass_no_match = True
+            else:
+                no_pass_msg = True
+                print("no password changed")
+            user.save()
+        except:
+            error = True
+
+    return render(request, 'spaces/edit_profile.html', locals())
+
+
+def test(id, username=None, first_name=None, last_name=None, email=None, contact=None, password1=None, password2=None, ):
+    user = User.objects.get(id=id)
+    try:
+        if username:
+            user.username = username
+            print(user.username)
+        else:
+            no_username_msg = True
+            print("username not changed")
+        if first_name:
+            user.first_name = first_name
+        else:
+            no_first_name_msg = True
+            print("first name not changed")
+        if last_name:
+            user.last_name = last_name
+        else:
+            no_last_name_msg = True
+            print("last name not changed")
+        if email:
+            user.email = email
+        else:
+            no_email_msg = True
+            print("email not changed")
+        if contact:
+            try:
+                user.client.user_id != None
+                user.client.contact = contact
+            except:
+                user.landlord.user_id != None
+                user.landlord.contact = contact
+        else:
+            no_contact_msg = True
+            print("contact not changed")
+        if password1 and password2:
+            if password1 == password2:
+                user.set_password(password1)
+            else:
+                error_pass_no_match = True
+        else:
+            no_pass_msg = True
+            print("no password changed")
+        user.save()
+    except:
+        error = True
+
+
+def add_house(request, id):
+    form = AddHouseForm(request.POST)
+    if form.is_valid():
+        house_area = form.cleaned_data['house_area']
+        house_rent = form.cleaned_data['house_rent']
+        house_deposit = form.cleaned_data['house_deposit']
+        house_kind = form.cleaned_data['house_kind']
+        house_rooms_number = form.cleaned_data['house_rooms_rent']
+        house_available = form.cleaned_data['house_available']
+        house_to_sell = form.cleaned_data['house_to_sell']
+        house_image = form.cleaned_data['house_image']
+
+        landlord = Landlord.objects.get(user_id=id)
+        house = House(landlord, house_area=house_area, house_rent=house_rent, house_deposit=house_deposit,
+                      house_kind=house_kind, house_rooms_number=house_rooms_number,
+                      house_available=house_available, house_to_sell=house_to_sell, house_image=house_image)
+        house.save()
+
+        return(request, 'add_house.html', locals())
+
+
+def log_out(request):
+    logout(request)
+    return redirect(reverse("spaces:signin"))

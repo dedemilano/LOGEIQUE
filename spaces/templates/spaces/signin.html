@@ -1,0 +1,40 @@
+{% extends 'spaces/base.html' %}
+{% block title %}Connexion{% endblock %}
+{% block navbarbrand1 %}Nouveautés{% endblock navbarbrand1 %}
+{% block navlink1 %}forum{% endblock navlink1 %}
+{% block navlink2 %}S'enregistrer{% endblock navlink2 %}
+{% block navlinkdisabled1 %}Se connecter{% endblock navlinkdisabled1 %}
+{% block mt51 %}LOGEIQUEMENT{% endblock mt51 %}
+{% block lead1 %} Connectez vous !{% endblock lead1 %}
+{% block content %}
+{% if error %}
+<p><strong>Utilisateur inconnu ou mauvais de mot de passe.</strong></p>
+{% endif %}
+<form method="post" action="{% url 'spaces:signin' %}">
+    {% csrf_token %}
+
+    <p>
+        {{form.username.label}}
+        {{form.username}}
+    </p>
+    <p>
+        {{form.password.label}}
+        {{form.password}}
+    </p>
+    <p>
+        {{form.client.label}}
+        {{form.client}}
+
+
+        {{form.landlord.label}}
+        {{form.landlord}}
+    </p>
+    <input type="submit" value="Se connecter" />
+</form>
+{% if client_user.is_authenticated %}
+Vous êtes connecté client, {{ client_user.username }} !
+<a href="{% url 'spaces:see_client_profile' client_user.id %}" class="btn btn-lg btn-secondary">Cliquez ici</a>
+{% elif landlord_user.is_authenticated %}
+Vous êtes connecté propietaire, {{ landlord_user.username }}!
+<a href=" {% url 'spaces:see_landlord_profile' landlord_user.id %}" class="btn btn-lg btn-secondary">Cliquez ici</a>
+{% endif %} {% endblock content %}
