@@ -43,7 +43,7 @@ class House(models.Model):
     house_rooms_number = models.PositiveSmallIntegerField()
     house_available = models.BooleanField()
     house_to_sell = models.BooleanField()
-    house_image = models.ImageField(upload_to="houses/")
+    house_image = models.ImageField(upload_to="houses/" , )
     landlord = models.ForeignKey(
         Landlord, on_delete=models.CASCADE, related_name="houses")
 
