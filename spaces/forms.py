@@ -51,4 +51,4 @@ class AddHouseForm(forms.Form):
     house_rooms_number = forms.IntegerField()
     house_available = forms.BooleanField()
     house_to_sell = forms.BooleanField()
-    house_image = forms.ImageField(upload_to="houses/")
+    house_image = forms.ImageField()
