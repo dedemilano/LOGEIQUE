@@ -13,6 +13,7 @@
 {% if no_contact_msg %}
 <p><strong>Contact non changé</strong></p>
 {% endif %}
+
 {% if no_pass_msg %}
 <p><strong>Mot de passe non changé</strong></p>
 {% endif %}
@@ -56,5 +57,13 @@
         {{form.password_verification.label}}
         {{form.password_verification}}
     </p>
+    {% if error_pass_no_match %}
+    <p><strong>Les mots de passes entrés ne correspondent pas.</strong></p>
+    {% endif %}
     <input type="submit" value="Modifier" />
+    {% if user.client.user_id != None %}
+    <a href="{% url 'spaces:see_client_profile' user.id %}"> Retournez à votre profil</a>
+    {% elif user.landlord.user_id != None %}
+    <a href="{% url 'spaces:see_client_profile' user.id %}"> Retournez à votre profil</a>
+    {% endif %}
 </form>
