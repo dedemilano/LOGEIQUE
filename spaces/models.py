@@ -11,7 +11,7 @@ class Client(models.Model):
     contact = models.CharField(max_length=50)
     rent_proposal = models.BigIntegerField(null=True)
     deposit_proposal = models.BigIntegerField(null=True)
-    avatar = models.ImageField(null=True, blank=True, upload_to="avatars/")
+    avatar = models.ImageField(null=True, blank=True, upload_to="img/avatars/")
 
     def __str__(self):
         return f'{self.user}'
@@ -36,14 +36,15 @@ class Landlord(models.Model):
 
 
 class House(models.Model):
+    house_township = models.CharField(max_length=50)
     house_area = models.CharField(max_length=50)
-    house_rent = models.BigIntegerField()
-    house_deposit = models.BigIntegerField()
+    house_rent = models.IntegerField()
+    house_deposit = models.IntegerField()
     house_kind = models.CharField(max_length=50)
-    house_rooms_number = models.PositiveSmallIntegerField()
+    house_rooms_number = models.IntegerField()
     house_available = models.BooleanField()
     house_to_sell = models.BooleanField()
-    house_image = models.ImageField(upload_to="houses/" , )
+    house_image = models.ImageField(upload_to="img/houses/")
     landlord = models.ForeignKey(
         Landlord, on_delete=models.CASCADE, related_name="houses")
 
