@@ -31,26 +31,33 @@ class SignInForm(SignUpForm):
 
 
 class EditForm(forms.Form):
-    username = forms.CharField(label='Pseudo : ', max_length=200, required=False , widget=forms.TextInput(attrs={
+    username = forms.CharField(label='Pseudo : ', max_length=200, required=False, widget=forms.TextInput(attrs={
         'class': 'inbox', 'title': 'Pseudo', 'placeholder': 'Entrez votre pseudo'}))
-    first_name = forms.CharField(label='Prenom : ', max_length=200, required=False ,widget=forms.TextInput(attrs={
+    first_name = forms.CharField(label='Prenom : ', max_length=200, required=False, widget=forms.TextInput(attrs={
         'class': 'inbox', 'title': 'Prenom', 'placeholder': 'Entrez votre Prenom'}))
-    last_name = forms.CharField(label='Nom', max_length=200, required=False ,widget=forms.TextInput(attrs={
+    last_name = forms.CharField(label='Nom', max_length=200, required=False, widget=forms.TextInput(attrs={
         'class': 'inbox', 'title': 'Nom', 'placeholder': 'Entrez votre Nom'}))
-    email = forms.EmailField(label='Email : ', required=False, widget=forms.EmailInput(attrs={'class': 'inbox', 'title': 'Email', 'placeholder': 'Entrez votre addresse electronique', 'id': 'lo_em'}))
-    contact = forms.CharField(label='Contact : ',required=False , widget=forms.TextInput(attrs={'class': 'inbox', 'title': 'Contact', 'placeholder': 'Exemple : + 225 00-00-00-00', 'id': 'lo_nu'}))
-    password = forms.CharField(label='Mot de passe :',required=False ,  max_length=200, widget=forms.PasswordInput(attrs={'class': 'inbox', 'title': 'Mot de passe', 'placeholder': 'Entrez votre mot de passe'}))
-    password_verification = forms.CharField(label='Vérification', required=False, max_length=200, widget=forms.PasswordInput(attrs={'class': 'inbox', 'title': 'Vérification', 'placeholder': 'Entrez votre mot de passe à nouveau'}))
+    email = forms.EmailField(label='Email : ', required=False, widget=forms.EmailInput(attrs={
+                             'class': 'inbox', 'title': 'Email', 'placeholder': 'Entrez votre addresse electronique', 'id': 'lo_em'}))
+    contact = forms.CharField(label='Contact : ', required=False, widget=forms.TextInput(
+        attrs={'class': 'inbox', 'title': 'Contact', 'placeholder': 'Exemple : + 225 00-00-00-00', 'id': 'lo_nu'}))
+    password = forms.CharField(label='Mot de passe :', required=False,  max_length=200, widget=forms.PasswordInput(
+        attrs={'class': 'inbox', 'title': 'Mot de passe', 'placeholder': 'Entrez votre mot de passe'}))
+    password_verification = forms.CharField(label='Vérification', required=False, max_length=200, widget=forms.PasswordInput(
+        attrs={'class': 'inbox', 'title': 'Vérification', 'placeholder': 'Entrez votre mot de passe à nouveau'}))
+    rent_proposal = forms.IntegerField(label='budget loyer', required=False)
+    deposit_proposal = forms.IntegerField(
+        label='budget caution', required=False)
+    avatar = forms.ImageField(label='ajoute avatar', required=False)
 
 
 class AddHouseForm(forms.Form):
-    house_township = forms.CharField(max_length=50 , label='Commune')
-    house_area = forms.CharField(max_length=50 , label='Quartier')
+    house_township = forms.CharField(max_length=50, label='Commune')
+    house_area = forms.CharField(max_length=50, label='Quartier')
     house_rent = forms.IntegerField(label='Loyer')
     house_deposit = forms.IntegerField(label='Caution')
-    house_kind = forms.CharField(max_length=50 , label='Type de maison')
+    house_kind = forms.CharField(max_length=50, label='Type de maison')
     house_rooms_number = forms.IntegerField(label='Nombres de pieces')
-    house_available = forms.BooleanField(label='disponible' , required=False)
-    house_to_sell = forms.BooleanField(label='A vendre' , required=False)
-    house_image = forms.ImageField(label='Image' , required=False)
-   
+    house_available = forms.BooleanField(label='disponible', required=False)
+    house_to_sell = forms.BooleanField(label='A vendre', required=False)
+    house_image = forms.ImageField(label='Image', required=False)
