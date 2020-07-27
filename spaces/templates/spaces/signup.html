@@ -28,11 +28,20 @@
         {{form.contact.label}}
         {{form.contact}}
     </p>
+    {% if invalid_contact_err %}
+    Le format de contact est invalide
+    {% endif %}
+    {% if contact_exist_error %}
+    le contact que vous avez entré existe déja veuillez le changer
+    {% endif %}
 
     <p>
         {{form.email.label}}
         {{form.email}}
     </p>
+    {% if email_unique_error %}
+    l'email que vous avez entré existe déja veuillez le changer
+    {% endif %}
 
     <p>
         {{form.password.label}}
@@ -43,6 +52,10 @@
         {{form.password_verification.label}}
         {{form.password_verification}}
     </p>
+    {% if pass_different_err %}
+    Les mots de passe entrés ne correspondent pas
+    {% endif %}
+
 
     <p>
         {{form.client.label}}
@@ -52,7 +65,7 @@
         {{form.landlord.label}}
         {{form.landlord}}
     </p>
-    <input type="submit" name="Creer compte" , value="Creer compte">
+    <input type="submit" name="Creer compte" value="Creer compte">
 </form>
 {% endblock content %}
 {% block scripts %}
