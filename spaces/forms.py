@@ -44,11 +44,13 @@ class EditForm(forms.Form):
 
 
 class AddHouseForm(forms.Form):
-    house_area = forms.CharField(max_length=50)
-    house_rent = forms.IntegerField()
-    house_deposit = forms.IntegerField()
-    house_kind = forms.CharField(max_length=50)
-    house_rooms_number = forms.IntegerField()
-    house_available = forms.BooleanField()
-    house_to_sell = forms.BooleanField()
-    house_image = forms.ImageField()
+    house_township = forms.CharField(max_length=50 , label='Commune')
+    house_area = forms.CharField(max_length=50 , label='Quartier')
+    house_rent = forms.IntegerField(label='Loyer')
+    house_deposit = forms.IntegerField(label='Caution')
+    house_kind = forms.CharField(max_length=50 , label='Type de maison')
+    house_rooms_number = forms.IntegerField(label='Nombres de pieces')
+    house_available = forms.BooleanField(label='disponible' , required=False)
+    house_to_sell = forms.BooleanField(label='A vendre' , required=False)
+    house_image = forms.ImageField(label='Image' , required=False)
+   
