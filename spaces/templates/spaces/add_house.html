@@ -1,0 +1,52 @@
+<form method="post" action="{% url 'spaces:add_house' user.id %}" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <p>
+        {{form.house_township.label}}
+        {{form.house_township}}
+    </p
+
+    <p>
+        {{form.house_area.label}}
+        {{form.house_area}}
+    </p>
+
+    <p>
+        {{form.house_rent.label}}
+        {{form.house_rent}}
+    </p>
+
+    <p>
+        {{form.house_deposit.label}}
+        {{form.house_deposit}}
+    </p>
+
+    <p>
+        {{form.house_kind.label}}
+        {{form.house_kind}}
+    </p>
+
+    <p>
+        {{form.house_rooms_number.label}}
+        {{form.house_rooms_number}}
+    </p>
+    <div>
+        {{form.house_available.label}}
+        {{form.house_available}}
+
+        {{form.house_to_sell.label}}
+        {{form.house_to_sell}}
+    </div>
+    <p>
+        {{form.house_image.label}}
+        {{form.house_image}}
+    </p>
+
+    <input type="submit" value="Enregistrer" />
+    
+</form>
+{% if user.client.user_id != None %}
+    <a href="{% url 'spaces:see_client_profile' user.id %}"> Retournez à votre profil</a>
+    {% elif user.landlord.user_id != None %}
+    <a href="{% url 'spaces:see_client_profile' user.id %}"> Retournez à votre profil</a>
+    {% endif %}
