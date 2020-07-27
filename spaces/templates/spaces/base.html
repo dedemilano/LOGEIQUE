@@ -53,8 +53,8 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'spaces:signin' %}" id="navlink1">{% block navlink1 %}Se
-                            connecter{% endblock navlink1 %}<span class="sr-only">(current)</span></a>
+                        {% block navlink1 %}<a class="nav-link" href="{% url 'spaces:signin' %}" id="navlink1">Se
+                            connecter<span class="sr-only">(current)</span></a>{% endblock navlink1 %}
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"
