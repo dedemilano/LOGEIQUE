@@ -241,7 +241,7 @@ def edit_profile(request, id):
         password2 = form.cleaned_data['password_verification']
         rent_proposal = form.cleaned_data['rent_proposal']
         deposit_proposal = form.cleaned_data['deposit_proposal']
-        avatar = request.FILES['avatar']
+        avatar = request.FILES.get('avatar')
 
         user = User.objects.get(id=id)
         try:
