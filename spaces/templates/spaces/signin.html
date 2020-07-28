@@ -1,9 +1,12 @@
 {% extends 'spaces/base.html' %}
 {% block title %}Connexion{% endblock %}
-{% block navbarbrand1 %}Nouveautés{% endblock navbarbrand1 %}
-{% block navlink1 %}forum{% endblock navlink1 %}
-{% block navlink2 %}S'enregistrer{% endblock navlink2 %}
-{% block navlinkdisabled1 %}Se connecter{% endblock navlinkdisabled1 %}
+{% block navbarbrand1 %}<a class="navbar-brand" id="navbarbrand1" href="#">Nouveautés</a>{% endblock navbarbrand1 %}
+{% block navlink1 %}<a class="nav-link" href="#" id="navlink1">Forum<span
+        class="sr-only">(current)</span></a>{% endblock navlink1 %}
+{% block navlink2 %}<a class="nav-link" href="{% url 'spaces:signup' %}"
+    id="navlink2">S'enregistrer</a>{% endblock navlink2 %}
+{% block navlinkdisabled1 %}<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"
+    id="navlinkdisabled1">Se connecter</a>{% endblock navlinkdisabled1 %}
 {% block mt51 %}LOGEIQUEMENT{% endblock mt51 %}
 {% block lead1 %} Connectez vous !{% endblock lead1 %}
 {% block content %}
