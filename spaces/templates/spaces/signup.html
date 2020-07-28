@@ -1,9 +1,12 @@
 {% extends 'spaces/base.html' %}
 {% block title %}Enregistrement{% endblock %}
-{% block navbarbrand1 %}Se connecter{% endblock navbarbrand1 %}
-{% block navlink1 %}Nouveautés{% endblock navlink1 %}
-{% block navlink2 %}forum{% endblock navlink2 %}
-{% block navlinkdisabled1 %}S'enregistrer{% endblock navlinkdisabled1 %}
+{% block navbarbrand1 %}<a class="navbar-brand" id="navbarbrand1" href="{% url 'spaces:signin' %}">Se
+    connecter</a>{% endblock navbarbrand1 %}
+{% block navlink1 %}<a class="nav-link" href="#" id="navlink1">Nouveautés<span class="sr-only">(current)</span></a>%
+endblock navlink1 %}
+{% block navlink2 %}<a class="nav-link" href="#" id="navlink2">Forum</a>{% endblock navlink2 %}
+{% block navlinkdisabled1 %}<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"
+    id="navlinkdisabled1">S'enregistrer</a>{% endblock navlinkdisabled1 %}
 {% block mt51 %}Mon nom c'est LOGEIQUE V1 et vous ?{% endblock mt51 %}
 {% block lead1 %} Présentez vous à moi ,ensemble nous ferons des exploits{% endblock lead1 %}
 {% block content %}
