@@ -320,7 +320,7 @@ def log_out(request):
     logout(request)
     return redirect(reverse("spaces:signin"))
 
-
+"""
 def test(id, username=None, first_name=None, last_name=None, email=None, contact=None, password1=None, password2=None, ):
     user = User.objects.get(id=id)
     try:
@@ -366,3 +366,4 @@ def test(id, username=None, first_name=None, last_name=None, email=None, contact
         user.save()
     except:
         error = True
+"""
