@@ -10,6 +10,8 @@
         {{form.username}}
         {% if no_username_msg %}
             <p><strong>Pseudo non changé</strong></p>
+        {% elif yes_username_msg %}
+            <p><strong>Pseudo changé</strong></p>
         {% endif %}
     </p>
 
@@ -18,6 +20,8 @@
         {{form.first_name}}
         {% if no_first_name_msg %}
             <p><strong>Prenom non changé</strong></p>
+        {% elif yes_first_name_msg %}
+            <p><strong>Prenom changé</strong></p>
         {% endif %}
     </p>
 
@@ -26,6 +30,8 @@
         {{form.last_name}}
         {% if no_last_name_msg %}
             <p><strong>Nom non changé</strong></p>
+        {% elif yes_last_name_msg %}
+            <p><strong>Nom changé</strong></p>
         {% endif %}
     </p>
 
@@ -34,6 +40,8 @@
         {{form.contact}}
         {% if no_contact_msg %}
             <p><strong>Contact non changé</strong></p>
+        {% elif yes_contact_msg %}
+            <p><strong>Contact changé</strong></p>
         {% endif %}
     </p>
 
@@ -42,6 +50,8 @@
         {{form.email}}
         {% if no_email_msg %}
             <p><strong>Email non changé</strong></p>
+        {% elif yes_email_msg %}
+            <p><strong>Email changé</strong></p>
         {% endif %}
     </p>
 
@@ -58,11 +68,18 @@
         {{form.password_verification}}
         {% if error_pass_no_match %}
             <p><strong>Les mots de passes entrés ne correspondent pas.</strong></p>
+        {% elif yes_pass_msg %}
+            <p><strong>Mot de passe changé</strong></p>
         {% endif %}
     </p>
     <p>
         {{form.avatar.label}}
         {{form.avatar}}
+        {% if avatar_added_err %}
+            <p><strong>Aucun avatar ajouté.</strong></p>
+        {% elif avatar_added %}
+            <p><strong>Avatar ajouté</strong></p>
+        {% endif %}
     </p>
     
     <input type="submit" value="Modifier" />
