@@ -1,22 +1,4 @@
-{% if no_username_msg %}
-<p><strong>Pseudo non changé</strong></p>
-{% endif %}
-{% if no_first_name_msg %}
-<p><strong>Prenom non changé</strong></p>
-{% endif %}
-{% if no_last_name_msg %}
-<p><strong>Nom non changé</strong></p>
-{% endif %}
-{% if no_email_msg %}
-<p><strong>Email non changé</strong></p>
-{% endif %}
-{% if no_contact_msg %}
-<p><strong>Contact non changé</strong></p>
-{% endif %}
 
-{% if no_pass_msg %}
-<p><strong>Mot de passe non changé</strong></p>
-{% endif %}
 {% if error %}
 <p><strong>une erreur inhabituelle est survenue</strong></p>
 {% endif %}
@@ -26,44 +8,63 @@
     <p>
         {{form.username.label}}
         {{form.username}}
+        {% if no_username_msg %}
+            <p><strong>Pseudo non changé</strong></p>
+        {% endif %}
     </p>
 
     <p>
         {{form.first_name.label}}
         {{form.first_name}}
+        {% if no_first_name_msg %}
+            <p><strong>Prenom non changé</strong></p>
+        {% endif %}
     </p>
 
     <p>
         {{form.last_name.label}}
         {{form.last_name}}
+        {% if no_last_name_msg %}
+            <p><strong>Nom non changé</strong></p>
+        {% endif %}
     </p>
 
     <p>
         {{form.contact.label}}
         {{form.contact}}
+        {% if no_contact_msg %}
+            <p><strong>Contact non changé</strong></p>
+        {% endif %}
     </p>
 
     <p>
         {{form.email.label}}
         {{form.email}}
+        {% if no_email_msg %}
+            <p><strong>Email non changé</strong></p>
+        {% endif %}
     </p>
 
     <p>
         {{form.password.label}}
         {{form.password}}
+        {% if no_pass_msg %}
+            <p><strong>Mot de passe non changé</strong></p>
+        {% endif %}
     </p>
 
     <p>
         {{form.password_verification.label}}
         {{form.password_verification}}
+        {% if error_pass_no_match %}
+            <p><strong>Les mots de passes entrés ne correspondent pas.</strong></p>
+        {% endif %}
     </p>
     <p>
         {{form.avatar.label}}
         {{form.avatar}}
     </p>
-    {% if error_pass_no_match %}
-    <p><strong>Les mots de passes entrés ne correspondent pas.</strong></p>
-    {% endif %}
+    
     <input type="submit" value="Modifier" />
     {% if user.client.user_id != None %}
     <a href="{% url 'spaces:see_client_profile' user.id %}"> Retournez à votre profil</a>
