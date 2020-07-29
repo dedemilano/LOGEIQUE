@@ -42,10 +42,14 @@
         <header class="masthead mb-auto">
             <div class="inner">
                 <h3 class="masthead-brand">{{user.username}}</h3>
+                {% if user.client.avatar %}
+                <img src="{{user.client.avatar.url}}" alt="Image de {{user.username}}">
+                {% endif %}
                 <nav class="nav nav-masthead justify-content-center">
                     <a class="nav-link active" href="#">Acceuil</a>
                     <a class="nav-link" href="{% url 'spaces:edit_profile' user.id %}">Profil</a>
                     <a class="nav-link" href="#">Notification</a>
+                    <a class="nav-link" href="{% url 'spaces:logout' %}">Se deconnecter</a>
                 </nav>
             </div>
         </header>
