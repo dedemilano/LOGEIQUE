@@ -165,7 +165,6 @@ def sign_in(request):
             password = form.cleaned_data['password']
             client_check = form.cleaned_data['client']
             landlord_check = form.cleaned_data['landlord']
-
             if client_check:
                 try:
                     user_tempt = get_object_or_404(User, username=username)
@@ -221,6 +220,7 @@ def see_profile(request, id):
 
 @login_required()
 def edit_profile(request, id):
+    form = EditForm()
     error = False
     error_pass_no_match = False
     no_username_msg = False
@@ -230,18 +230,18 @@ def edit_profile(request, id):
     no_contact_msg = False
     no_pass_msg = False
     invalid_contact_err = False
-    form = EditForm(request.POST, request.FILES)
-    if form.is_valid():
-        username = form.cleaned_data['username']
-        first_name = form.cleaned_data['first_name']
-        last_name = form.cleaned_data['last_name']
-        email = form.cleaned_data['email']
-        contact = form.cleaned_data['contact']
-        password1 = form.cleaned_data['password']
-        password2 = form.cleaned_data['password_verification']
-        rent_proposal = form.cleaned_data['rent_proposal']
-        deposit_proposal = form.cleaned_data['deposit_proposal']
-        avatar = request.FILES.get('avatar')
+    if request.method == 'POST':
+        form = EditForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            email = form.cleaned_data['email']
+            contact = form.cleaned_data['contact']
+            password1 = form.cleaned_data['password']
+            password2 = form.cleaned_data['password_verification']
+            rent_proposal = form.cleaned_data['rent_proposal']
+            deposit_proposal = form.cleaned_data['deposit_proposal']
 
         user = User.objects.get(id=id)
         try:
@@ -268,14 +268,18 @@ def edit_profile(request, id):
                     if is_valid_contact(contact) == False:
                         invalid_contact_err = True
                         return render(request, 'spaces/edit_profile.html', locals())
-                    user.client.contact = contact
+                    client = Client.objects.get(user_id = id)
+                    client.contact = contact
+                    client.save()
 
                 except:
                     user.landlord.user_id != None
                     if is_valid_contact(contact) == False:
                         invalid_contact_err = True
                         return render(request, 'spaces/edit_profile.html', locals())
-                    user.landlord.contact = contact
+                    landlord = Landlord.objects.get(user_id = id)
+                    landlord.contact = contact
+                    landlord.save()
             else:
                 no_contact_msg = True
             if password1 and password2:
@@ -285,6 +289,28 @@ def edit_profile(request, id):
                     error_pass_no_match = True
             else:
                 no_pass_msg = True
+            if avatar:
+                try:
+                    user.client.user_id != None
+                    user.client.avatar = avatar
+                except:
+                    user.landlord.user_id != None
+                    user.landlord.avatar = avatar
+            try:
+                user.client.user_id != None
+                if is_valid_contact(contact) == False:
+                    invalid_contact_err = True
+                    return render(request, 'spaces/edit_profile.html', locals())
+                user.client.contact = contact
+                print(user.client.contact)
+                print(user.client)
+
+            except:
+                user.landlord.user_id != None
+                if is_valid_contact(contact) == False:
+                    invalid_contact_err = True
+                    return render(request, 'spaces/edit_profile.html', locals())
+                user.landlord.contact = contact
             user.save()
         except:
             error = True
