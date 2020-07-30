@@ -221,17 +221,8 @@ def see_profile(request, id):
 @login_required()
 def edit_profile(request, id):
     form = EditForm()
-    error = False
-    error_pass_no_match = False
-    no_username_msg = False
-    no_first_name_msg = False
-    no_last_name_msg = False
-    no_email_msg = False
-    no_contact_msg = False
-    no_pass_msg = False
-    invalid_contact_err = False
     if request.method == 'POST':
-        form = EditForm(request.POST)
+        form = EditForm(request.POST , request.FILES)
         if form.is_valid():
             username = form.cleaned_data['username']
             first_name = form.cleaned_data['first_name']
@@ -242,24 +233,44 @@ def edit_profile(request, id):
             password2 = form.cleaned_data['password_verification']
             rent_proposal = form.cleaned_data['rent_proposal']
             deposit_proposal = form.cleaned_data['deposit_proposal']
+            avatar = request.FILES.get('avatar')
 
         user = User.objects.get(id=id)
         try:
+            if avatar:
+                try:
+                    user.client.user_id != None
+                    client = Client.objects.get(user_id = id)
+                    client.avatar = avatar
+                    client.save()
+                    avatar_added = True
+                except:
+                    user.landlord.user_id != None
+                    landlord = Landlord.objects.get(user_id = id)
+                    landlord.avatar = avatar
+                    landlord.save()
+                    avatar_added= True
+            else:
+                avatar_added_err = True
             if username:
                 user.username = username
+                yes_username_msg = True
             else:
                 no_username_msg = True
             if first_name:
                 user.first_name = first_name
+                yes_first_name_msg = True
             else:
                 no_first_name_msg = True
             if last_name:
                 user.last_name = last_name
+                yes_last_name_msg = True
             else:
                 no_last_name_msg = True
 
             if email:
                 user.email = email
+                yes_email_msg = True
             else:
                 no_email_msg = True
             if contact:
@@ -280,37 +291,17 @@ def edit_profile(request, id):
                     landlord = Landlord.objects.get(user_id = id)
                     landlord.contact = contact
                     landlord.save()
+                yes_contact_msg =   True
             else:
                 no_contact_msg = True
             if password1 and password2:
                 if password1 == password2:
                     user.set_password(password1)
+                    yes_pass_msg = True
                 else:
                     error_pass_no_match = True
             else:
                 no_pass_msg = True
-            if avatar:
-                try:
-                    user.client.user_id != None
-                    user.client.avatar = avatar
-                except:
-                    user.landlord.user_id != None
-                    user.landlord.avatar = avatar
-            try:
-                user.client.user_id != None
-                if is_valid_contact(contact) == False:
-                    invalid_contact_err = True
-                    return render(request, 'spaces/edit_profile.html', locals())
-                user.client.contact = contact
-                print(user.client.contact)
-                print(user.client)
-
-            except:
-                user.landlord.user_id != None
-                if is_valid_contact(contact) == False:
-                    invalid_contact_err = True
-                    return render(request, 'spaces/edit_profile.html', locals())
-                user.landlord.contact = contact
             user.save()
         except:
             error = True
@@ -345,6 +336,30 @@ def add_house(request, id):
 def log_out(request):
     logout(request)
     return redirect(reverse("spaces:signin"))
+
+def see_houses(request , id):
+    try:
+        houses = House.objects.filter(landlord__user_id = id)
+        for house in houses:
+            township = house.house_township
+            area = house.house_area
+            rent = house.house_rent
+            deposit = house.house_deposit
+            kind = house.house_kind
+            rooms_number = house.house_rooms_number
+            if house.house_available:
+                availability_msg = True
+            else: 
+                unavailibility_msg = True
+            if house.house_to_sell:
+                sale_msg = True
+            else:
+                not_sale_msg = True 
+            if house.house_image:
+                image = house.house_image
+    except:
+        no_house_err = True
+    return render(request ,'spaces/see_houses.html' , locals())
 
 """
 def test(id, username=None, first_name=None, last_name=None, email=None, contact=None, password1=None, password2=None, ):
@@ -393,3 +408,34 @@ def test(id, username=None, first_name=None, last_name=None, email=None, contact
     except:
         error = True
 """
+
+"""def test2(id):
+    houses = House.objects.filter(landlord__user_id = id)
+    for house in houses:
+        township = house.house_township
+        print(f"township:{township}")
+        area = house.house_area
+        print(f"Area:{area}")
+        rent = house.house_rent
+        print(f"rent:{rent}")
+        deposit = house.house_deposit
+        print(f"deposit:{deposit}")
+        kind = house.house_kind
+        print(f"kind:{kind}")
+        rooms_number = house.house_rooms_number
+        print(f"rooms number:{rooms_number}")
+        if house.house_available:
+            availability_msg = True
+            print("available") 
+        else: 
+            unavailibility_msg = True
+            print("unavailable")
+        if house.house_to_sell:
+            sale_msg = True
+            print("for sale")
+        else:
+            not_sale_msg = True 
+            print("not for sale")
+        if house.house_image:
+            image = house.house_image
+            print(f"image:{image}")"""
