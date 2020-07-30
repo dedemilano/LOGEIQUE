@@ -49,10 +49,10 @@ class House(models.Model):
         Landlord, on_delete=models.CASCADE, related_name="houses")
 
     def __str__(self):
-        return f'{self.area} , {self.kind}'
+        return f'{self.house_township} , {self.house_area} , {self.house_kind}'
 
     class Meta():
-        ordering = ['house_area', 'house_kind',
+        ordering = ['house_township','house_area', 'house_kind',
                     'house_rooms_number', 'house_rent', 'house_deposit']
 
 
