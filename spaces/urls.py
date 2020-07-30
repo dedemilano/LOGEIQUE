@@ -13,6 +13,7 @@ urlpatterns = [
     path('landlord/profile/<int:id>',
          views.see_profile, name="see_landlord_profile"),
     path('user/edit/profile/<int:id>', views.edit_profile, name="edit_profile"),
-    path('add/house/<int:id>', views.add_house, name="add_house")
+    path('add/house/<int:id>', views.add_house, name="add_house"),
+    path('see/house/<int:id>' , views.see_houses , name="see_houses")
 
 ]
