@@ -1,6 +1,20 @@
 {% if no_house_err %}
 <p>Vous n'avez aucune maisons pour l'instant</p>
 {% endif %}
-{% if image %}
-    <img src="{image.url}" alt="image de maison">
-{% endif %}
+{% for house in houses %}
+    {% if house.house_image %}
+    <div>
+        <img src="{{house.house_image.url}}" alt="image de maison">
+        <p>Commune: {{house.house_township}} {{area}}</p>
+        <p>Loyer: {{house.house_rent}} FCFA</p>
+        <p>Caution: {{house.house_deposit}} FCFA</p>
+        <p>Type: {{house.house_kind}}</p>
+        <p>{{house.house_rooms_number}} pieces</p>
+        {% if house.house_available %}
+            <P>Disponible</P>
+        {% else %}
+        <p>Indisponible</p>
+        {% endif %}
+    </div>
+    {% endif %}
+{% endfor %}
