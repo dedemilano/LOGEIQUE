@@ -8,7 +8,39 @@ from django.shortcuts import get_object_or_404, Http404
 from django.contrib.auth.decorators import login_required
 from spaces.models import Client, Landlord
 import re
+import os
+from PIL import Image 
 
+houses_path= os.path.abspath("C:/Users/XC-DEV-3/Documents/projet soutenance/logeique2/media/img/houses")
+avatars_path = os.path.abspath("C:/Users/XC-DEV-3/Documents/projet soutenance/logeique2/media/img/avatars")
+
+max_height= 540
+max_width= 304
+extensions= ['PNG','JPG']
+
+def adjusted_size(width,height):
+    if width>max_width or height>max_height:
+        if width>height:
+            return max_width, int (max_width * height/ width)
+        else:
+            return int (max_height*width/height), max_height
+    else:
+        return width,height
+
+  
+def resize(path , f): 
+    try:
+        if f in os.listdir(path):
+            if os.path.isfile(os.path.join(path,f)):
+                f_text, f_ext= os.path.splitext(f)
+                f_ext= f_ext[1:].upper()
+                if f_ext in extensions:
+                    image = Image.open(os.path.join(path,f))
+                    width, height= image.size
+                    image = image.resize(adjusted_size(width , height))
+                    return f
+    except IOError: 
+        pass
 
 def is_valid_contact(number):
     contact_valid = False
@@ -324,10 +356,13 @@ def add_house(request, id):
             house_to_sell = form.cleaned_data['house_to_sell']
             house_image = request.FILES['house_image']
 
+            house_image = resize(houses_path , house_image)
+
             landlord = Landlord.objects.get(user_id=id)
             house = House(landlord=landlord, house_area=house_area, house_rent=house_rent, house_deposit=house_deposit,
                           house_kind=house_kind, house_rooms_number=house_rooms_number,
                           house_available=house_available, house_to_sell=house_to_sell, house_image=house_image, house_township=house_township)
+
             house.save()
 
     return render(request, 'spaces/add_house.html', locals())
@@ -338,26 +373,10 @@ def log_out(request):
     return redirect(reverse("spaces:signin"))
 
 def see_houses(request , id):
-    try:
-        houses = House.objects.filter(landlord__user_id = id)
-        for house in houses:
-            township = house.house_township
-            area = house.house_area
-            rent = house.house_rent
-            deposit = house.house_deposit
-            kind = house.house_kind
-            rooms_number = house.house_rooms_number
-            if house.house_available:
-                availability_msg = True
-            else: 
-                unavailibility_msg = True
-            if house.house_to_sell:
-                sale_msg = True
-            else:
-                not_sale_msg = True 
-            if house.house_image:
-                image = house.house_image
-    except:
+    houses = House.objects.filter(landlord__user_id = id)
+    if houses:
+        no_house_err = False
+    else:
         no_house_err = True
     return render(request ,'spaces/see_houses.html' , locals())
 
@@ -409,33 +428,10 @@ def test(id, username=None, first_name=None, last_name=None, email=None, contact
         error = True
 """
 
-"""def test2(id):
-    houses = House.objects.filter(landlord__user_id = id)
-    for house in houses:
-        township = house.house_township
-        print(f"township:{township}")
-        area = house.house_area
-        print(f"Area:{area}")
-        rent = house.house_rent
-        print(f"rent:{rent}")
-        deposit = house.house_deposit
-        print(f"deposit:{deposit}")
-        kind = house.house_kind
-        print(f"kind:{kind}")
-        rooms_number = house.house_rooms_number
-        print(f"rooms number:{rooms_number}")
-        if house.house_available:
-            availability_msg = True
-            print("available") 
-        else: 
-            unavailibility_msg = True
-            print("unavailable")
-        if house.house_to_sell:
-            sale_msg = True
-            print("for sale")
-        else:
-            not_sale_msg = True 
-            print("not for sale")
-        if house.house_image:
-            image = house.house_image
-            print(f"image:{image}")"""
+def test2(id):
+    try:
+        houses = House.objects.filter(landlord__user_id = id)
+    except:
+        error = True 
+        print(error)
+    
