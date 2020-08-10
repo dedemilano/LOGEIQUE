@@ -11,12 +11,12 @@ def get_result(value, choice = 0):
     if (choice == 0):
         try:
             houses_list = list(House.objects.filter(
-            Q(house_township__icontains=value) | Q(house_area__icontains=value) |Q(house_kind__icontains=value)))
+            Q(house_township__icontains=value) | Q(house_area__icontains=value) |Q(house_kind__icontains=value)|Q(house_rent=int(value))|Q(house_deposit=int(value))))
         except Http404:
             houses = houses_list = []
         clients_list = list(Client.objects.filter(
-            Q(kind_desire__icontains=value) | Q(rooms_number_desire__icontains=value)))
-        landlords_list = list(Landlord.objects.filter(Q(user__username__icontains = value)| Q(user_first_name__icontains=value)| Q(user__last_name__icontains=value))) 
+            Q(kind_desire__icontains=value) | Q(rooms_number_desire__icontains=int(value)) | Q(rent_proposal__icontains=int(value))| Q(deposit_proposal__icontains=int(value))))
+        landlords_list = list(Landlord.objects.filter(Q(user__username__icontains = value)| Q(user__first_name__icontains=value)| Q(user__last_name__icontains=value))) 
         if not clients_list:
             clients = clients_list = []
         if not landlords_list:
@@ -32,21 +32,25 @@ def get_result(value, choice = 0):
             Q(house_township__icontains=value) | Q(house_area__icontains=value) |Q(house_kind__icontains=value)|Q(house_rent =int(value)) |Q(house_deposit=int(value))))
         except Http404:
             houses = houses_list = []
-        landlords_list = list(Landlord.objects.filter(Q(user__username__icontains = value)| Q(user_first_name__icontains=value)| Q(user__last_name__icontains=value))) 
+        landlords_list = list(Landlord.objects.filter(Q(user__username__icontains = value)| Q(user__first_name__icontains=value)| Q(user__last_name__icontains=value))) 
         if not landlords_list:
             landlords = landlords_list = []
         if (len(houses_list) > 0 or len(landlords_list)> 0):
             houses = houses_list 
             landlords = landlords_list
+    #The case where house checkbox is selected
     elif choice == 2:
         clients_list = list(Client.objects.filter(
-            Q(kind_desire__icontains=value) | Q(rooms_number_desire=int(value)) | Q(rent_proposal = int(value))|Q(deposit_proposal = int(value))|Q(user__username__icontains = value)))
+            Q(kind_desire__icontains=value) | Q(rooms_number_desire=int(value)) | Q(rent_proposal = int(value))|Q(deposit_proposal = int(value))|
+            Q(user__username__icontains = value)|Q(user__first_name__icontains = value)|Q(user__last_name__icontains = value)))
         if not clients_list:
             clients = clients_list = []
         if (len(houses_list) > 0):
             clients = clients_list
     elif choice == 3:
-        landlords_list = list(Landlord.objects.filter(Q(user__username__icontains = value)| Q(user_first_name__icontains=value)| Q(user__last_name__icontains=value))) 
+        landlords_list = list(Landlord.objects.filter(Q(user__username__icontains = value)| Q(user__first_name__icontains=value)| 
+        Q(user__last_name__icontains=value)| Q(houses__house_township__icontains=value) |
+         Q(houses__house_area__icontains=value) |Q(houses__house_rent=int(value))|Q(houses__house_deposit=int(value)))) 
         if not landlords_list:
             landlords = landlords_list = []
 

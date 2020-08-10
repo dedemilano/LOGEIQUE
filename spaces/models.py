@@ -31,7 +31,7 @@ class Landlord(models.Model):
         Client, related_name="landlords", through="Deal")
 
     def __str__(self):
-        return f'{self.username}'
+        return f'{self.user}'
 
     class Meta():
         ordering = ['user', 'contact']
