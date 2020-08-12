@@ -10,6 +10,7 @@ from spaces.models import Client, Landlord
 import re
 import os
 from PIL import Image 
+from search.forms import SearchForm
 
 houses_path= os.path.abspath("C:/Users/XC-DEV-3/Documents/projet soutenance/logeique2/media/img/houses")
 avatars_path = os.path.abspath("C:/Users/XC-DEV-3/Documents/projet soutenance/logeique2/media/img/avatars")
@@ -68,6 +69,7 @@ def is_valid_contact(number):
 
 
 def home(request):
+    form = SearchForm()
     return render(request, 'spaces/index.html', locals())
 
 
