@@ -8,6 +8,12 @@ from django.shortcuts import Http404
 
 def get_result(value, choice = 1):
     #the case where the user select all checkbox
+    clients = []
+    landlords = []
+    houses = []
+    clients_list = []
+    landlords_list = []
+    houses_list = []
     if (choice == 1):
         try:
             value = int(value)
@@ -20,10 +26,10 @@ def get_result(value, choice = 1):
             houses = houses_list = []
         try:
             value = int(value)
-            clients_list = list(Client.objects.filter(
+            clients_list = list(Client.objects.filter(Q(user__username__icontains = value)| Q(user__first_name__icontains=value)| Q(user__last_name__icontains=value) |
                 Q(kind_desire__icontains=value) | Q(rooms_number_desire__icontains=int(value)) | Q(rent_proposal__icontains=int(value))| Q(deposit_proposal__icontains=int(value))))
         except ValueError:
-            clients_list = list(Client.objects.filter(Q(kind_desire__icontains=value)))
+            clients_list = list(Client.objects.filter(Q(user__username__icontains = value)| Q(user__first_name__icontains=value)| Q(user__last_name__icontains=value) |Q(kind_desire__icontains=value)))
         if not clients_list:
             clients = clients_list = []
         try:
@@ -88,15 +94,20 @@ def get_result(value, choice = 1):
 
 
 def get_result_two(value , choice1 , choice2):
+    clients = []
+    landlords = []
+    houses = []
+    clients_list = []
+    landlords_list = []
+    houses_list = []
     #The case where house and client checkbox are selected
-    if ((choice1 == 2 and  choice1 ==3) or (choice1 == 3 and choice2 == 2)):
+    if ((choice1 == 2 and  choice2 ==3) or (choice1 == 3 and choice2 == 2)):
         try:
             value = int(value)
             houses_list = list(House.objects.filter(
             Q(house_township__icontains=value) | Q(house_area__icontains=value) |Q(house_kind__icontains=value)|Q(house_rent =int(value)) |Q(house_deposit=int(value))))
         except ValueError:
-            houses_list = list(House.objects.filter(
-            Q(house_township__icontains=value) | Q(house_area__icontains=value) |Q(house_kind__icontains=value)))
+            houses_list = list(House.objects.filter(Q(house_township__icontains=value) | Q(house_area__icontains=value) |Q(house_kind__icontains=value)))
         if not houses_list:
             houses = houses_list = []
         try:
@@ -116,11 +127,9 @@ def get_result_two(value , choice1 , choice2):
     if((choice1 == 2 and choice2 == 4) or (choice1 == 4 and choice2 == 2)):
         try:
             value = int(value)
-            houses_list = list(House.objects.filter(
-                Q(house_township__icontains=value) | Q(house_area__icontains=value) |Q(house_kind__icontains=value)|Q(house_rent =int(value)) |Q(house_deposit=int(value))))
+            houses_list = list(House.objects.filter(Q(house_township__icontains=value) | Q(house_area__icontains=value) |Q(house_kind__icontains=value)|Q(house_rent =int(value)) |Q(house_deposit=int(value))))
         except ValueError:
-            houses_list = list(House.objects.filter(
-                Q(house_township__icontains=value) | Q(house_area__icontains=value) |Q(house_kind__icontains=value)|Q(house_rent =int(value)) |Q(house_deposit=int(value))))
+            houses_list = list(House.objects.filter(Q(house_township__icontains=value) | Q(house_area__icontains=value) |Q(house_kind__icontains=value)))
         if not houses_list:
             houses = houses_list = []
         try:
@@ -161,7 +170,11 @@ def get_result_two(value , choice1 , choice2):
                 Q(houses__house_area__icontains=value)))
         if not landlords_list:
             landlords = landlords_list = []
-    context = {'clients':clients, 'clients_list':clients_list, 'houses':houses, 'houses_list':houses_list,'landlords':landlords,'landlords_list':landlords_list}
+    if (len(clients_list) > 0 or len(houses_list) > 0 or len(landlords_list)> 0):
+            clients = clients_list
+            houses = houses_list 
+            landlords = landlords_list
+    context = {'clients':clients,  'houses':houses, 'landlords':landlords,}
     return context
         
 def search(request):
@@ -172,35 +185,35 @@ def search(request):
             value = form.cleaned_data['query']
             value_for_all = form.cleaned_data['query_for_all']
             value_for_house = form.cleaned_data['query_for_house']
+            print(value_for_house)
             value_for_client = form.cleaned_data['query_for_client']
+            print(value_for_client)
             value_for_landlord = form.cleaned_data['query_for_lanlord']
             values_array = [value_for_all,value_for_house , value_for_client, value_for_landlord] 
             if values_array[0]:
                 context = get_result(value)
+                print(f"context:{context}")
+            elif (values_array[1] and values_array[2]):
+                print("ok")
+                context = get_result_two(value, 2, 3)
+                print(context)
+            elif (values_array[1] and values_array[3]):
+                context = get_result_two (value, 2, 4)
+            elif (values_array[2] and values_array[3]):
+                context = get_result_two (value, 3, 4)
             elif values_array[1]:
                 context = get_result(value, 2)
             elif values_array[2]:
                 context = get_result(value, 3)
             elif values_array[3]:
                 context = get_result(value, 4)
-            elif (values_array[1] and values_array[2]):
-                context = get_result_two(value, 2, 3)
-            elif (values_array[1] and values_array[3]):
-                context = get_result_two (value, 2, 4)
-            elif (values_array[2] and values_array[3]):
-                context = get_result_two (value, 3, 4)
+            
             else:
                 context = get_result(value)
-    return render(request, 'search/search.html', locals())
+    return render(request, 'search/search_result.html', locals())
 
 def test(value):
-    try:
-        value = int(value)
-        houses_list = list(House.objects.filter(
-        Q(house_township__icontains=value) | Q(house_area__icontains=value) |Q(house_kind__icontains=value)|Q(house_rent=int(value))|Q(house_deposit=int(value))))
-    except ValueError:
-        houses_list = list(House.objects.filter(
-        Q(house_township__icontains=value) | Q(house_area__icontains=value) |Q(house_kind__icontains=value)))
-    if not houses_list:
-        houses = houses_list = []
-    return houses_list
+    clients =list(Client.objects.filter(
+                Q(kind_desire__icontains=value)|Q(user__username__icontains = value)|Q(user__first_name__icontains = value)|Q(user__last_name__icontains = value)))
+    for client in clients:
+        print(client.user.username)
