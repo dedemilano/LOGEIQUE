@@ -1,0 +1,56 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        {% if context.clients %}
+        <h3>Clients interessés par ce genre de maisons</h3>
+            {% for client in context.clients %}
+                <p>{{client.user.username}}</p>
+            {% endfor %}
+        {% endif %}
+        </div>
+        
+        <div>
+        {% if context.landlords %}
+        <h3>Proprietaires concernés</h3>
+            {% for landlord in context.landlords %}
+            <div>
+                {{landlord.user.username}}
+                {{landlord.contact}}
+            </div>
+            {% endfor %}
+        {% endif %}
+        </div>
+        
+        <div>
+        {% if context.houses %}
+        <h3>Maisons concernés</h3>
+              {% for house in context.houses %}
+              <div>
+               COmmune: {{house.house_township}} 
+               QUartier: {{house.house_area}} 
+               TYpe: {{house.house_kind}} 
+               LOyer: {{house.house_rent}}
+               CAution: {{house.house_deposit}}
+               NOmbre de pieces: {{house.house_rooms_number}}
+               {% if house.house_to_sell %}
+                    maison à vendre
+               {% else %}
+                    pas à vendre
+               {% endif %}
+               {% if house.house_available %}
+                    Maison disponible
+               {% else %}
+                    Maison occupée
+                {% endif %}
+            </div>
+            {% endfor %}
+            {% endif %}
+            
+        </div>
+</body>
+</html>
