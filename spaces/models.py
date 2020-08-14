@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
 
 
 # Create your models here.
@@ -47,6 +48,7 @@ class House(models.Model):
     house_available = models.BooleanField()
     house_to_sell = models.BooleanField()
     house_image = models.ImageField(upload_to="img/houses/")
+    house_creation_day = models.DateTimeField(default=datetime.now)
     landlord = models.ForeignKey(
         Landlord, on_delete=models.CASCADE, related_name="houses")
 
