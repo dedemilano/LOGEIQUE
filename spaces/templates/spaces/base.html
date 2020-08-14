@@ -45,7 +45,7 @@
 <body class="d-flex flex-column h-100 b text-center">
     <header>
         <!-- Fixed navbar -->
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top" id="nav1">
+        {% block navbar %}<nav class="navbar navbar-expand-md navbar-dark fixed-top" id="nav1">{% endblock navbar%}
             {% block navbarbrand1 %}<a class="navbar-brand" id="navbarbrand1"
                 href="{% url 'spaces:signup' %}">S'enregistrer</a>{% endblock navbarbrand1 %}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
@@ -74,11 +74,13 @@
 
     <!-- Begin page content -->
     <main role="main" class="flex-shrink-0">
+        {% block container %}
         <div class="container">
             <h1 class="mt-5" id="mt51">{% block mt51 %}Bonjour , LOGEIQUE{% endblock mt51 %}</h1>
             <p class="lead" id="lead1">{% block lead1 %} facilitez vous le choix de votre futur
                 maison{% endblock lead1 %}</p>
         </div>
+        {% endblock container %}
     </main>
 
     <div id="content">
