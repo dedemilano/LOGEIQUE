@@ -239,6 +239,7 @@ def sign_in(request):
 
 @login_required()
 def see_profile(request, id):
+    form = SearchForm()
     user = User.objects.get(id=id)
     try:
         user.is_superuser == 0
@@ -254,6 +255,7 @@ def see_profile(request, id):
 
 @login_required()
 def edit_profile(request, id):
+    user = User.objects.get(id=id)
     form = EditForm()
     if request.method == 'POST':
         form = EditForm(request.POST , request.FILES)
@@ -358,7 +360,7 @@ def add_house(request, id):
             house_to_sell = form.cleaned_data['house_to_sell']
             house_image = request.FILES['house_image']
 
-            house_image = resize(houses_path , house_image)
+            #house_image = resize(houses_path , house_image)
 
             landlord = Landlord.objects.get(user_id=id)
             house = House(landlord=landlord, house_area=house_area, house_rent=house_rent, house_deposit=house_deposit,
