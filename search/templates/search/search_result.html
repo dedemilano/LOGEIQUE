@@ -3,6 +3,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" 
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
 <body>
     <div>
@@ -29,11 +31,24 @@
         <div>
         {% if context.houses %}
         <h3>Maisons concernés</h3>
-              {% for house in context.houses %}
-              <div>
-               COmmune: {{house.house_township}} 
+        {% for house in context.houses %}
+        <div class="row row-cols-1 row-cols-md-2">
+            <div class="col mb-4">
+                <div class="card">
+                    <img src="{{house.house_image.url}}" class="card-img-top" alt="pas d'image">
+                    <div class="card-body">
+                        <h5 class="card-title">TYpe: {{house.house_kind}}</h5>
+                        <p class="card-text">COmmune: {{house.house_township}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+              
+        <!--
+            <div>
+                
                QUartier: {{house.house_area}} 
-               TYpe: {{house.house_kind}} 
+                
                LOyer: {{house.house_rent}}
                CAution: {{house.house_deposit}}
                NOmbre de pieces: {{house.house_rooms_number}}
@@ -50,7 +65,11 @@
             </div>
             {% endfor %}
             {% endif %}
-            
+        
+        {% if not context.clients and not context.landlords and not context.houses %}
+            <h1> Aucun resultat</h1>
+        {% endif %}
         </div>
+        --> 
 </body>
 </html>
