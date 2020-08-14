@@ -12,63 +12,69 @@
 {% block content %}
 <form method='POST' action="{% url 'spaces:signup' %}">
     {% csrf_token %}
-    <p>
+    <div class="form-group">
         {{form.username.label}}
         {{form.username}}
-    </p>
-
-    <p>
+    </div>
+        
+    <div class="form-group">
         {{form.first_name.label}}
         {{form.first_name}}
-    </p>
-
-    <p>
+    </div>
+    <div class="form-group">
         {{form.last_name.label}}
         {{form.last_name}}
-    </p>
-
-    <p>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
         {{form.contact.label}}
         {{form.contact}}
-    </p>
-    {% if invalid_contact_err %}
-    Le format de contact est invalide
-    {% endif %}
-    {% if contact_exist_error %}
-    le contact que vous avez entré existe déja veuillez le changer
-    {% endif %}
+        </div>
+        {% if invalid_contact_err %}
+        Le format de contact est invalide
+        {% endif %}
+        {% if contact_exist_error %}
+        le contact que vous avez entré existe déja veuillez le changer
+        {% endif %}
 
-    <p>
+        <div class="form-group col-md-6">
         {{form.email.label}}
         {{form.email}}
-    </p>
-    {% if email_unique_error %}
-    l'email que vous avez entré existe déja veuillez le changer
-    {% endif %}
+        </div>
+        {% if email_unique_error %}
+        l'email que vous avez entré existe déja veuillez le changer
+        {% endif %}
+    </div>
 
-    <p>
+    <div class="form-row">
+        <div class="form-group col-md-6">
         {{form.password.label}}
         {{form.password}}
-    </p>
+        </div>
 
-    <p>
+        <div class="form-group col-md-6">
         {{form.password_verification.label}}
         {{form.password_verification}}
-    </p>
-    {% if pass_different_err %}
-    Les mots de passe entrés ne correspondent pas
-    {% endif %}
+        </div>
+        {% if pass_different_err %}
+        Les mots de passe entrés ne correspondent pas
+        {% endif %}
+    </div>
 
 
-    <p>
+    <div class="form-group">
+        <div class="form-check">
         {{form.client.label}}
         {{form.client}}
 
 
         {{form.landlord.label}}
         {{form.landlord}}
-    </p>
-    <input type="submit" name="Creer compte" value="Creer compte">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary" name="Creer compte" value="Creer compte">Creer votre compte</button>
+
+    
 </form>
 {% endblock content %}
 {% block scripts %}
