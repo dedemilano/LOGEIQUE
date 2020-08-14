@@ -3,23 +3,23 @@ from django import forms
 
 class SignUpForm(forms.Form):
     username = forms.CharField(label='Pseudo : ', max_length=200, widget=forms.TextInput(attrs={
-        'class': 'inbox', 'title': 'Pseudo', 'placeholder': 'Entrez votre pseudo'}))
+        'class': 'form-control inbox', 'title': 'Pseudo', 'placeholder': 'Entrez votre pseudo'}))
     first_name = forms.CharField(label='Prenom : ', max_length=200, widget=forms.TextInput(attrs={
-        'class': 'inbox', 'title': 'Prenom', 'placeholder': 'Entrez votre Prenom'}))
+        'class': 'form-control inbox', 'title': 'Prenom', 'placeholder': 'Entrez votre Prenom'}))
     last_name = forms.CharField(label='Nom', max_length=200, widget=forms.TextInput(attrs={
-        'class': 'inbox', 'title': 'Nom', 'placeholder': 'Entrez votre Nom'}))
+        'class': 'form-control inbox', 'title': 'Nom', 'placeholder': 'Entrez votre Nom'}))
     email = forms.EmailField(label='Email : ', required=False, widget=forms.EmailInput(
-        attrs={'class': 'inbox', 'title': 'Email', 'placeholder': 'Entrez votre addresse electronique', 'id': 'lo_em'}))
+        attrs={'class': 'form-control inbox', 'title': 'Email', 'placeholder': 'Entrez votre addresse electronique', 'id': 'lo_em'}))
     contact = forms.CharField(label='Contact : ', widget=forms.TextInput(
-        attrs={'class': 'inbox', 'title': 'Contact', 'placeholder': 'Exemple : 00-00-00-00', 'id': 'lo_nu'}))
+        attrs={'class': 'form-control inbox', 'title': 'Contact', 'placeholder': 'Exemple : 00-00-00-00', 'id': 'lo_nu'}))
     client = forms.BooleanField(label='Client : ', required=False, widget=forms.CheckboxInput(
-        attrs={'class': 'stick', 'onclick': 'active()', 'id': 'is_cl'}))
+        attrs={'class': 'form-check-input stick', 'onclick': 'active()', 'id': 'is_cl'}))
     landlord = forms.BooleanField(label='Proprietaire : ', required=False, widget=forms.CheckboxInput(
-        attrs={'class': 'stick', 'onclick': 'active()', 'id': 'is_la'}))
+        attrs={'class': 'form-check-input stick', 'onclick': 'active()', 'id': 'is_la'}))
     password = forms.CharField(label='Mot de passe :', max_length=200, widget=forms.PasswordInput(attrs={
-        'class': 'inbox', 'title': 'Mot de passe', 'placeholder': 'Entrez votre mot de passe'}))
+        'class': 'form-control inbox', 'title': 'Mot de passe', 'placeholder': 'Entrez votre mot de passe'}))
     password_verification = forms.CharField(label='Vérification', max_length=200, widget=forms.PasswordInput(attrs={
-        'class': 'inbox', 'title': 'Vérification', 'placeholder': 'Entrez votre mot de passe à nouveau'}))
+        'class': 'form-control inbox', 'title': 'Vérification', 'placeholder': 'Entrez votre mot de passe à nouveau'}))
 
 
 class SignInForm(SignUpForm):
@@ -32,19 +32,19 @@ class SignInForm(SignUpForm):
 
 class EditForm(forms.Form):
     username = forms.CharField(label='Pseudo : ', max_length=200, required=False, widget=forms.TextInput(attrs={
-        'class': 'inbox', 'title': 'Pseudo', 'placeholder': 'Entrez votre pseudo'}))
+        'class': 'form-control inbox', 'title': 'Pseudo', 'placeholder': 'Entrez votre pseudo'}))
     first_name = forms.CharField(label='Prenom : ', max_length=200, required=False, widget=forms.TextInput(attrs={
-        'class': 'inbox', 'title': 'Prenom', 'placeholder': 'Entrez votre Prenom'}))
+        'class': 'form-control inbox', 'title': 'Prenom', 'placeholder': 'Entrez votre Prenom'}))
     last_name = forms.CharField(label='Nom', max_length=200, required=False, widget=forms.TextInput(attrs={
-        'class': 'inbox', 'title': 'Nom', 'placeholder': 'Entrez votre Nom'}))
+        'class': 'form-control inbox', 'title': 'Nom', 'placeholder': 'Entrez votre Nom'}))
     email = forms.EmailField(label='Email : ', required=False, widget=forms.EmailInput(attrs={
-                             'class': 'inbox', 'title': 'Email', 'placeholder': 'Entrez votre addresse electronique', 'id': 'lo_em'}))
+                             'class': 'form-control inbox', 'title': 'Email', 'placeholder': 'Entrez votre addresse electronique', 'id': 'lo_em'}))
     contact = forms.CharField(label='Contact : ', required=False, widget=forms.TextInput(
-        attrs={'class': 'inbox', 'title': 'Contact', 'placeholder': 'Exemple : + 225 00-00-00-00', 'id': 'lo_nu'}))
+        attrs={'class': 'form-control inbox', 'title': 'Contact', 'placeholder': 'Exemple : + 225 00-00-00-00', 'id': 'lo_nu'}))
     password = forms.CharField(label='Mot de passe :', required=False,  max_length=200, widget=forms.PasswordInput(
-        attrs={'class': 'inbox', 'title': 'Mot de passe', 'placeholder': 'Entrez votre mot de passe'}))
+        attrs={'class': 'form-control inbox', 'title': 'Mot de passe', 'placeholder': 'Entrez votre mot de passe'}))
     password_verification = forms.CharField(label='Vérification', required=False, max_length=200, widget=forms.PasswordInput(
-        attrs={'class': 'inbox', 'title': 'Vérification', 'placeholder': 'Entrez votre mot de passe à nouveau'}))
+        attrs={'class': 'form-control inbox', 'title': 'Vérification', 'placeholder': 'Entrez votre mot de passe à nouveau'}))
     rent_proposal = forms.IntegerField(label='budget loyer', required=False)
     deposit_proposal = forms.IntegerField(
         label='budget caution', required=False)
